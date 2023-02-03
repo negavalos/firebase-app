@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../App';
 import { addNewTask, getTasks, taskDelete, updateTask } from '../firebase/taskController';
 
 
@@ -9,8 +10,10 @@ const ListShop = () => {
     const [task, setTask] = useState({title:"", description: ""});
     const [tasks, setTasks] = useState([]);
     const [mode, setMode] = useState('add');
+    const { user } = useContext(AppContext);
+
     const createNewTask = async () => {
-      await addNewTask(task);
+      await addNewTask(task).catch(e => console.log("error:", e))
       setTask({ title: "", description: "" });
       initializeTasks()
     }
@@ -42,9 +45,9 @@ const ListShop = () => {
       <h1 className="text-purple-600 font-semibold text-lg">Estas en la lista de compras</h1>
       <div className="flex flex-col gap-4">
         <h1>Introduce una nueva tarea</h1>
-        <input type="text" placeholder="Titulo" className="border shadow outline-none focus:ring ring-purple-600 rounded px-2 py-1 w-full" value={task.title} onChange={(e) => setTask({...task, title: e.target.value})} />
-        <textarea rows={4} type="text" placeholder="Descripcion" className="border shadow outline-none focus:ring ring-purple-600 rounded px-2 py-1 w-full" value={task.description} onChange={(e) => setTask({...task, description: e.target.value})} />
-        <button className="bg-purple-500 text-white rounded shadow py-1 hover:bg-purple-600 transition font-semibold" onClick={mode === "add" ? createNewTask : updateExistingTask}>{mode ==="add" ? "Añadir" : "Actualizar"}</button>
+        <input disabled={!user} type="text" placeholder="Titulo" className="border shadow outline-none focus:ring ring-purple-600 rounded px-2 py-1 w-full" value={task.title} onChange={(e) => setTask({...task, title: e.target.value})} />
+        <textarea disabled={!user} rows={4} type="text" placeholder="Descripcion" className="border shadow outline-none focus:ring ring-purple-600 rounded px-2 py-1 w-full" value={task.description} onChange={(e) => setTask({...task, description: e.target.value})} />
+        <button disabled={!user} className="bg-purple-500 text-white rounded shadow py-1 hover:bg-purple-600 transition font-semibold disabled:bg-purple-400" onClick={mode === "add" ? createNewTask : updateExistingTask}>{mode ==="add" ? "Añadir" : "Actualizar"}</button>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
         {tasks.map((task) =>(
           <div key={task.id} className="rounded-lg border border-purple-600 p-4 flex flex-col ga
@@ -60,6 +63,7 @@ const ListShop = () => {
         ))}
         </div>
       </div>
+      {!user && <p className="text-red-600">Necesitas estar Logeado para añadir o leer las tareas</p>}
     </div>
   )
 }

@@ -41,7 +41,7 @@ function App() {
           {route === "register" && <Register />}
           {route === "shopping" && <Shopping />}
           {route === "ListShop" && <ListShop />}
-          {user && <p>Usuario Logeado: {user.uid}</p>}
+          
         </main>
         <Footer />
       </div>
