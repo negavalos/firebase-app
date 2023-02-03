@@ -21,7 +21,7 @@ const Header = () => {
     <header className="h-20 w-full bg-gray-200 shadow-lg flex items-center justify-between px-8 fixed top-0">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => setRoute("home")}>
         <IoLogoFirebase className="text-2xl text-purple-500" />
-        <span className="text-xl font-semibold text-purple-500">Firebase-App v7</span>
+        <span className="text-xl font-semibold text-purple-500">Firebase-App v8</span>
         </div>
         <div className="flex gap-3">
          {!user ? <><button className="bg-purple-500 text-white py-1 px-3 rounded-full hover:bg-purple-600 transition" onClick={() => setRoute("login")}>Login</button>
